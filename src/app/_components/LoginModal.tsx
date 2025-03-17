@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -18,16 +18,19 @@ import {
   FormField,
   FormItem,
   FormLabel,
-} from "../../components/ui/form";
+  FormMessage,
+} from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
-import { signupSchema } from "../../lib/schemas/user";
+import { signupSchema } from "@/lib/schemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../../components/ui/input";
-import { authClient } from "../../lib/auth-client";
-import { useRouter } from "next/router";
+import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
+import { revalidateAction } from "../../server/actions/revalidate";
+import { toast } from "sonner";
 
 const LoginModal = () => {
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -39,6 +42,7 @@ const LoginModal = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof signupSchema>) => {
+    form.clearErrors();
     await authClient.signUp.email(
       {
         email: data.email,
@@ -46,11 +50,40 @@ const LoginModal = () => {
         name: data.name,
       },
       {
+        onRequest: () => {
+          setLoading(true);
+        },
+        onResponse: () => {
+          setLoading(false);
+        },
         onSuccess: () => {
-          console.log("success");
+          void revalidateAction("/", "layout");
+
+          const closeButton = document.querySelector("#close-drawer");
+          if (closeButton instanceof HTMLButtonElement) {
+            closeButton.click();
+          }
+          toast("Signed up successfully", {
+            icon: "🎉",
+          });
+          form.reset();
         },
         onError: (error) => {
           console.log(error);
+          if (error.error.code === "FAILED_TO_CREATE_USER") {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            if (error.error.details?.meta?.modelName === "User") {
+              form.setError("name", {
+                message: "Name is taken",
+              });
+            }
+          }
+          if (error.error.code === "USER_ALREADY_EXISTS") {
+            console.log("Email is taken");
+            form.setError("email", {
+              message: "Email is taken",
+            });
+          }
         },
       },
     );
@@ -81,6 +114,7 @@ const LoginModal = () => {
                       <FormControl>
                         <Input type="email" placeholder="Email" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -93,6 +127,7 @@ const LoginModal = () => {
                       <FormControl>
                         <Input type="text" placeholder="John Doe" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -105,6 +140,7 @@ const LoginModal = () => {
                       <FormControl>
                         <Input type="password" placeholder="*****" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -117,14 +153,17 @@ const LoginModal = () => {
                       <FormControl>
                         <Input type="password" placeholder="*****" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
               <DrawerFooter>
-                <Button>Submit</Button>
+                <Button disabled={loading}>Submit</Button>
                 <DrawerClose asChild>
-                  <Button variant="outline">Cancel</Button>
+                  <Button id="close-drawer" variant="outline">
+                    Cancel
+                  </Button>
                 </DrawerClose>
               </DrawerFooter>
             </div>

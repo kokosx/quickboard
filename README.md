@@ -31,7 +31,3 @@ Simplest board for stating your opinions
   5.  Post tags ❌
 
 ### TODO:
-
-- add error handling when registering
-- add redirecting when registering
-- add feedback when registering
