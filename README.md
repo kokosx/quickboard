@@ -15,7 +15,7 @@ Simplest board for stating your opinions
 ### Features:
 
 - 🔐 Authentication
-  1. Email and password auth ❌
+  1. Email and password auth - Register ✔️ Login ❌
   2. Google auth ❌
 - 🤵 Users
   1. User profiles ❌
@@ -29,3 +29,9 @@ Simplest board for stating your opinions
   3.  Post comments ❌
   4.  Posts with images ❌
   5.  Post tags ❌
+
+### TODO:
+
+- add error handling when registering
+- add redirecting when registering
+- add feedback when registering
