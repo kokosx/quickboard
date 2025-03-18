@@ -5,7 +5,6 @@ import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import { Toaster } from "../components/ui/sonner";
-import TwitterLayout from "./_components/Layout";
 import LayoutTopBar from "./_components/LayoutTopBar";
 
 export const metadata: Metadata = {

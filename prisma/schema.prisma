@@ -11,6 +11,27 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model Board {
+  id        String   @id @default(uuid())
+  name      String
+
+  posts     Post[]
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  text      String
+  
+  boardId   String
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  createdBy String
+  createdByUser User     @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model User {
   id            String    @id
   name          String @unique
@@ -21,6 +42,8 @@ model User {
   updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
+
+  likedPosts Post[]
 
   
   @@unique([email])
