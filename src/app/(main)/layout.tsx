@@ -8,8 +8,11 @@ import TrendsForYou from "./../_components/TrendsForYou";
 import { type ReactNode } from "react";
 import ConditionalDisplay from "../_components/ConditionalDisplay";
 import CreatePost from "../_components/CreatePost";
+import { getSession } from "../../lib/auth";
 
 const layout = async ({ children }: { children: ReactNode }) => {
+  const s = await getSession();
+  const user = s?.user;
   return (
     <div className="container mx-auto flex-1 items-start px-4 py-4 md:grid md:grid-cols-[3fr_1fr] md:gap-6 md:px-6 lg:grid-cols-[3fr_1fr]">
       <main className="flex flex-col gap-4">
@@ -21,7 +24,7 @@ const layout = async ({ children }: { children: ReactNode }) => {
           </Button>
         </div>
         <ConditionalDisplay path={["/"]}>
-          <CreatePost />
+          <CreatePost user={user} />
         </ConditionalDisplay>
         <ScrollArea className="h-[calc(100vh-12rem)]">{children}</ScrollArea>
       </main>

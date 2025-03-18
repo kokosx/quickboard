@@ -92,7 +92,9 @@ const LoginModal = () => {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button variant="outline">Open Drawer</Button>
+        <Button id="open-auth-drawer" variant="outline">
+          Open Drawer
+        </Button>
       </DrawerTrigger>
       <DrawerContent>
         <Form {...form}>
@@ -175,3 +177,10 @@ const LoginModal = () => {
 };
 
 export default LoginModal;
+
+export const openAuthDrawer = () => {
+  const openButton = document.querySelector("#open-auth-drawer");
+  if (openButton instanceof HTMLButtonElement) {
+    openButton.click();
+  }
+};

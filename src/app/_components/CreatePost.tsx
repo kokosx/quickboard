@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Avatar,
@@ -6,10 +8,25 @@ import {
 } from "../../components/ui/avatar";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
+import { openAuthDrawer } from "./LoginModal";
+import { type User } from "better-auth";
 
-const CreatePost = () => {
+type Props = {
+  user?: User;
+};
+
+const CreatePost = ({ user }: Props) => {
+  const handleUnauthedClick = () => {
+    if (!user) {
+      openAuthDrawer();
+    }
+  };
+
   return (
-    <div className="flex gap-4 border-b pb-4 dark:border-gray-800">
+    <div
+      onClick={handleUnauthedClick}
+      className="flex gap-4 border-b pb-4 dark:border-gray-800"
+    >
       <Avatar className="h-10 w-10">
         <AvatarImage src="/placeholder.svg?height=40&width=40" alt="@user" />
         <AvatarFallback>U</AvatarFallback>

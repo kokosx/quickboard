@@ -3,8 +3,13 @@ import Link from "next/link";
 import React from "react";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
+import { getSession } from "../../lib/auth";
+import LoginModal from "./LoginModal";
 
-const LayoutTopBar = () => {
+const LayoutTopBar = async () => {
+  const s = await getSession();
+  const user = s?.user;
+  console.log(user);
   return (
     <div className="container sticky top-0 z-10 mx-auto border-b bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-gray-950/80">
       <div className="container flex h-16 items-center px-4 md:px-6">
@@ -47,10 +52,14 @@ const LayoutTopBar = () => {
               <Search className="h-5 w-5" />
               <span className="sr-only">Search</span>
             </Button>
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <User className="h-5 w-5" />
-              <span className="sr-only">Profile</span>
-            </Button>
+            {user ? (
+              <Button variant="ghost" size="icon" className="rounded-full">
+                <User className="h-5 w-5" />
+                <span className="sr-only">Profile</span>
+              </Button>
+            ) : (
+              <LoginModal />
+            )}
           </div>
         </div>
       </div>
