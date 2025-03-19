@@ -4,7 +4,7 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { openAuthDrawer } from "./LoginModal";
+import { openAuthDrawer } from "./AuthDrawer";
 import { type User } from "better-auth";
 import { type Board } from "@prisma/client";
 import {

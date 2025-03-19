@@ -4,7 +4,7 @@ import React from "react";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { getSession } from "../../lib/auth";
-import LoginModal from "./LoginModal";
+import AuthDrawer from "./AuthDrawer";
 
 const LayoutTopBar = async () => {
   const s = await getSession();
@@ -58,7 +58,7 @@ const LayoutTopBar = async () => {
                 <span className="sr-only">Profile</span>
               </Button>
             ) : (
-              <LoginModal />
+              <AuthDrawer />
             )}
           </div>
         </div>
