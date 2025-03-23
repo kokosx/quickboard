@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { openAuthDrawer } from "./AuthDrawer";
 import { type User } from "better-auth";
@@ -13,8 +12,22 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../components/ui/select";
+} from "@/components/ui/select";
 import BoardIcon from "./BoardIcon";
+import { useForm } from "react-hook-form";
+import { addPostSchema } from "@/lib/schemas/post";
+import { type z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
+import { api } from "@/trpc/react";
+import { toast } from "sonner";
 
 type Props = {
   user?: User;
@@ -28,6 +41,28 @@ const CreatePost = ({ user, boards }: Props) => {
     }
   };
 
+  const addPost = api.post.add.useMutation({
+    onSuccess: () => {
+      form.reset();
+      toast.success("Post created!");
+    },
+    onError: (error) => {
+      toast.error(error.message ?? "Unknown error occured");
+    },
+  });
+
+  const form = useForm<z.infer<typeof addPostSchema>>({
+    resolver: zodResolver(addPostSchema),
+    defaultValues: {
+      text: "",
+      board: undefined,
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof addPostSchema>) => {
+    addPost.mutate(data);
+  };
+
   return (
     <div
       onClick={handleUnauthedClick}
@@ -38,41 +73,43 @@ const CreatePost = ({ user, boards }: Props) => {
         <AvatarFallback>U</AvatarFallback>
       </Avatar>
       <div className="flex-1">
-        <Input
-          className="mb-2 border-none bg-transparent p-0 text-base placeholder:text-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0 dark:placeholder:text-gray-400"
-          placeholder="What's happening?"
-        />
-        <div className="flex justify-between">
-          <div className="-ml-2 flex">
-            <BoardChooser boards={boards} />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full text-blue-500"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-5 w-5"
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="text"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Textarea placeholder="What's happening?" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="mt-2 flex justify-between">
+              <FormField
+                control={form.control}
+                name="board"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <BoardChooser {...field} boards={boards} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button
+                disabled={addPost.isPending}
+                className="rounded-full bg-blue-500 px-4 font-medium text-white hover:bg-blue-600"
+                type="submit"
               >
-                <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" />
-                <path d="M8 9a2 2 0 1 1 4 0c0 1.5-.5 2-2 3" />
-                <path d="M10 15h.01" />
-              </svg>
-              <span className="sr-only">Add Poll</span>
-            </Button>
-          </div>
-          <Button className="rounded-full bg-blue-500 px-4 font-medium text-white hover:bg-blue-600">
-            Post
-          </Button>
-        </div>
+                Post
+              </Button>
+            </div>
+          </form>
+        </Form>
       </div>
     </div>
   );
@@ -80,9 +117,15 @@ const CreatePost = ({ user, boards }: Props) => {
 
 export default CreatePost;
 
-const BoardChooser = ({ boards }: { boards: Board[] }) => {
+type BoardChooserProps = {
+  boards: Board[];
+  onChange: (value: string) => void;
+  value: string;
+};
+
+const BoardChooser = ({ boards, onChange, value }: BoardChooserProps) => {
   return (
-    <Select>
+    <Select onValueChange={onChange} defaultValue={value}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Board" />
       </SelectTrigger>

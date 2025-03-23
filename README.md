@@ -29,5 +29,6 @@ Simplest board for stating your opinions
   3.  Post comments ❌
   4.  Posts with images ❌
   5.  Post tags ❌
+  6.  Polls ❌
 
 ### TODO:
