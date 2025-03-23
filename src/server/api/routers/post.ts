@@ -3,7 +3,8 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { addPostSchema } from "@/lib/schemas/post";
+import { addPostSchema, getPostsByBoardSchema } from "@/lib/schemas/post";
+import { getSession } from "@/lib/auth";
 
 export const postRouter = createTRPCRouter({
   add: protectedProcedure
@@ -21,4 +22,31 @@ export const postRouter = createTRPCRouter({
   getBoards: publicProcedure.query(async ({ ctx }) => {
     return await ctx.db.board.findMany();
   }),
+  getNewestPostsFromBoard: publicProcedure
+    .input(getPostsByBoardSchema)
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.post.findMany({
+        where: {
+          boardId: input.boardId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 10,
+        include: {
+          _count: {
+            select: {
+              likes: true,
+              comments: true,
+            },
+          },
+          createdByUser: {
+            select: {
+              name: true,
+              image: true,
+            },
+          },
+        },
+      });
+    }),
 });

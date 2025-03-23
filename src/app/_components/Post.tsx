@@ -1,38 +1,38 @@
 import { Heart, MessageCircle, MoreHorizontal, Repeat } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { PostOutput } from "../../server/api/trpc";
+
+type Props = PostOutput["getNewestPostsFromBoard"][number];
 
 const Post = ({
-  avatar,
-  name,
-  username,
-  time,
-  content,
-  likes,
-  retweets,
-}: {
-  avatar: string;
-  name: string;
-  username: string;
-  time: string;
-  content: string;
-  likes: number;
-  retweets: number;
-  replies: number;
-}) => {
+  createdAt,
+  id,
+  text,
+  updatedAt,
+  _count,
+  createdByUser,
+}: Props) => {
   return (
     <div className="border-b pb-4 dark:border-gray-800">
       <div className="flex gap-4">
         <Avatar className="h-10 w-10">
-          <AvatarImage src={avatar} alt={username} />
-          <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+          <AvatarImage
+            src={createdByUser.image as string | undefined}
+            alt={createdByUser.name}
+          />
+          <AvatarFallback>{createdByUser.name.charAt(0)}</AvatarFallback>
         </Avatar>
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <span className="font-bold">{name}</span>
-            <span className="text-gray-500 dark:text-gray-400">{username}</span>
+            <span className="font-bold">{createdByUser.name}</span>
+            <span className="text-gray-500 dark:text-gray-400">
+              @{createdByUser.name}
+            </span>
             <span className="text-gray-500 dark:text-gray-400">·</span>
-            <span className="text-gray-500 dark:text-gray-400">{time}</span>
+            <span className="text-gray-500 dark:text-gray-400">
+              {createdAt.toLocaleDateString()}
+            </span>
             <Button
               variant="ghost"
               size="icon"
@@ -42,7 +42,7 @@ const Post = ({
               <span className="sr-only">More</span>
             </Button>
           </div>
-          <p className="mt-1 text-gray-900 dark:text-gray-50">{content}</p>
+          <p className="mt-1 text-gray-900 dark:text-gray-50">{text}</p>
           <div className="mt-2 flex justify-between text-gray-500 dark:text-gray-400">
             <Button
               variant="ghost"
@@ -52,17 +52,7 @@ const Post = ({
               <MessageCircle className="h-4 w-4" />
               <span className="sr-only">Reply</span>
             </Button>
-            <div className="flex items-center gap-1">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 rounded-full"
-              >
-                <Repeat className="h-4 w-4" />
-                <span className="sr-only">Retweet</span>
-              </Button>
-              {retweets > 0 && <span className="text-xs">{retweets}</span>}
-            </div>
+
             <div className="flex items-center gap-1">
               <Button
                 variant="ghost"
@@ -72,7 +62,9 @@ const Post = ({
                 <Heart className="h-4 w-4" />
                 <span className="sr-only">Like</span>
               </Button>
-              {likes > 0 && <span className="text-xs">{likes}</span>}
+              {_count.likes > 0 && (
+                <span className="text-xs">{_count.likes}</span>
+              )}
             </div>
             <Button
               variant="ghost"

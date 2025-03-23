@@ -10,6 +10,7 @@ import ConditionalDisplay from "../_components/ConditionalDisplay";
 import CreatePost from "../_components/CreatePost";
 import { getSession } from "@/lib/auth";
 import { api } from "@/trpc/server";
+import BoardNavigation from "../_components/BoardNavigation";
 
 const layout = async ({ children }: { children: ReactNode }) => {
   const s = await getSession();
@@ -21,14 +22,14 @@ const layout = async ({ children }: { children: ReactNode }) => {
       <main className="flex flex-col gap-4">
         <div className="flex items-center justify-between border-b pb-4 dark:border-gray-800">
           <h1 className="text-xl font-bold">Home</h1>
-          <Button variant="ghost" size="icon" className="rounded-full">
-            <Star className="h-5 w-5" />
-            <span className="sr-only">Top Posts</span>
-          </Button>
+          <div>
+            <BoardNavigation boards={boards} />
+          </div>
         </div>
-        <ConditionalDisplay path={["/"]}>
-          <CreatePost boards={boards} user={user} />
-        </ConditionalDisplay>
+
+        {/* <ConditionalDisplay path={["/"]}> */}
+        <CreatePost boards={boards} user={user} />
+        {/* </ConditionalDisplay> */}
         <ScrollArea className="h-[calc(100vh-12rem)]">{children}</ScrollArea>
       </main>
       <LayoutAside>

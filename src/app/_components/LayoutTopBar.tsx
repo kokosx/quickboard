@@ -9,7 +9,6 @@ import AuthDrawer from "./AuthDrawer";
 const LayoutTopBar = async () => {
   const s = await getSession();
   const user = s?.user;
-  console.log(user);
   return (
     <div className="container sticky top-0 z-10 mx-auto border-b bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-gray-950/80">
       <div className="container flex h-16 items-center px-4 md:px-6">

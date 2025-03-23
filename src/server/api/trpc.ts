@@ -12,6 +12,7 @@ import { ZodError } from "zod";
 
 import { db } from "@/server/db";
 import { getSession } from "../../lib/auth";
+import { type RouterOutputs } from "../../trpc/react";
 
 /**
  * 1. CONTEXT
@@ -116,3 +117,5 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
 export const protectedProcedure = t.procedure
   .use(authMiddleware)
   .use(timingMiddleware);
+
+export type PostOutput = RouterOutputs["post"];

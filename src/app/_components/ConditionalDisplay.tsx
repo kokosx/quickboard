@@ -10,6 +10,7 @@ type Props = {
 
 const ConditionalDisplay = ({ children, path }: Props) => {
   const pathname = usePathname();
+  console.log(pathname);
   if (path.includes(pathname)) {
     return children;
   }
