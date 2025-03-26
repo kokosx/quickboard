@@ -3,8 +3,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { addPostSchema, getPostsByBoardSchema } from "@/lib/schemas/post";
-import { getSession } from "@/lib/auth";
+import { addPostSchema, getNewestPostsSchema } from "@/lib/schemas/post";
 
 export const postRouter = createTRPCRouter({
   add: protectedProcedure
@@ -22,13 +21,50 @@ export const postRouter = createTRPCRouter({
   getBoards: publicProcedure.query(async ({ ctx }) => {
     return await ctx.db.board.findMany();
   }),
-  getNewestPostsFromBoard: publicProcedure
-    .input(getPostsByBoardSchema)
-    .query(async ({ ctx, input }) => {
-      return await ctx.db.post.findMany({
-        where: {
-          boardId: input.boardId,
+  getMostPopular: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.post.findMany({
+      include: {
+        _count: {
+          select: {
+            likes: true,
+            comments: true,
+          },
         },
+        createdByUser: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+      },
+      take: 10,
+      orderBy: {
+        likes: {
+          _count: "desc",
+        },
+      },
+      where: {
+        createdAt: {
+          //Make it so that it only shows posts from the last 24 hours
+          gte: new Date(Date.now() - 24 * 60 * 60 * 1000),
+        },
+      },
+    });
+  }),
+
+  getNewest: publicProcedure
+    .input(getNewestPostsSchema)
+    .query(async ({ ctx, input }) => {
+      const withBoard = input.boardId
+        ? {
+            where: {
+              boardId: input.boardId,
+            },
+          }
+        : null;
+
+      return await ctx.db.post.findMany({
+        ...withBoard,
         orderBy: {
           createdAt: "desc",
         },

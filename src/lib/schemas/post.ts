@@ -5,6 +5,6 @@ export const addPostSchema = z.object({
   board: z.string(),
 });
 
-export const getPostsByBoardSchema = z.object({
-  boardId: z.string(),
+export const getNewestPostsSchema = z.object({
+  boardId: z.string().optional(),
 });
