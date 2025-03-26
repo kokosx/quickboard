@@ -1,5 +1,5 @@
 import React from "react";
-import PostsLoading from "../_components/PostLoading";
+import PostsLoading from "../../../_components/PostLoading";
 
 const loading = () => {
   return (
