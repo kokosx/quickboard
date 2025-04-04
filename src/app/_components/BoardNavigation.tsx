@@ -11,6 +11,8 @@ import {
 import BoardIcon from "./BoardIcon";
 
 import { useRouter } from "next/navigation";
+import { Button } from "../../components/ui/button";
+import { XIcon } from "lucide-react";
 
 type Props = {
   boards: Board[];
@@ -20,11 +22,21 @@ const BoardNavigation = ({ boards }: Props) => {
   const router = useRouter();
 
   return (
-    <Select onValueChange={(e) => router.push(`/board/${e}`)}>
+    <Select onValueChange={(e) => router.push(e == "/" ? "/" : `/board/${e}`)}>
       <SelectTrigger className="w-[280px]">
         <SelectValue placeholder="Select a board to browse" />
       </SelectTrigger>
       <SelectContent>
+        <SelectItem value="/">
+          <div
+            onMouseOver={() => {
+              router.prefetch(`/`);
+            }}
+            className="flex items-center gap-x-2"
+          >
+            All
+          </div>
+        </SelectItem>
         {boards.map((board) => (
           <SelectItem key={board.id} value={board.id}>
             <div
