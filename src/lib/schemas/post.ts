@@ -8,3 +8,7 @@ export const addPostSchema = z.object({
 export const getNewestPostsSchema = z.object({
   boardId: z.string().optional(),
 });
+
+export const likePostSchema = z.object({
+  postId: z.string(),
+});

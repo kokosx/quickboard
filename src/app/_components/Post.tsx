@@ -1,9 +1,10 @@
-import { Heart, MessageCircle, MoreHorizontal, Repeat } from "lucide-react";
+import { BookmarkIcon, MessageCircle, MoreHorizontal } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { PostOutput } from "../../server/api/trpc";
+import { type PostOutput } from "../../server/api/trpc";
+import PostLikeButton from "./PostLikeButton";
 
-type Props = PostOutput["getNewestPostsFromBoard"][number];
+type Props = PostOutput["getNewest"][number];
 
 const Post = ({
   createdAt,
@@ -12,6 +13,7 @@ const Post = ({
   updatedAt,
   _count,
   createdByUser,
+  likes,
 }: Props) => {
   return (
     <div className="border-b pb-4 dark:border-gray-800">
@@ -32,6 +34,14 @@ const Post = ({
             <span className="text-gray-500 dark:text-gray-400">·</span>
             <span className="text-gray-500 dark:text-gray-400">
               {createdAt.toLocaleDateString()}
+              {updatedAt !== createdAt && (
+                <>
+                  <span className="text-gray-500 dark:text-gray-400">·</span>
+                  <span className="text-gray-500 dark:text-gray-400">
+                    Edited
+                  </span>
+                </>
+              )}
             </span>
             <Button
               variant="ghost"
@@ -43,7 +53,12 @@ const Post = ({
             </Button>
           </div>
           <p className="mt-1 text-gray-900 dark:text-gray-50">{text}</p>
-          <div className="mt-2 flex justify-between text-gray-500 dark:text-gray-400">
+          <div className="mt-2 flex max-w-fit justify-between text-gray-500 dark:text-gray-400">
+            <PostLikeButton
+              initiallyLiked={likes.length > 0}
+              postId={id}
+              initialLikes={_count.likes}
+            />
             <Button
               variant="ghost"
               size="icon"
@@ -53,19 +68,15 @@ const Post = ({
               <span className="sr-only">Reply</span>
             </Button>
 
-            <div className="flex items-center gap-1">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 rounded-full"
-              >
-                <Heart className="h-4 w-4" />
-                <span className="sr-only">Like</span>
-              </Button>
-              {_count.likes > 0 && (
-                <span className="text-xs">{_count.likes}</span>
-              )}
-            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full"
+            >
+              <BookmarkIcon />
+              <span className="sr-only">Bookmark</span>
+            </Button>
+
             <Button
               variant="ghost"
               size="icon"

@@ -2,7 +2,7 @@ import { type PostOutput } from "../../server/api/trpc";
 import Post from "./Post";
 
 type Props = {
-  posts: PostOutput["getNewestPostsFromBoard"];
+  posts: PostOutput["getNewest"];
 };
 
 const PostList = ({ posts }: Props) => {

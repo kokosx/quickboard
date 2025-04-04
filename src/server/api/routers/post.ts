@@ -3,7 +3,12 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { addPostSchema, getNewestPostsSchema } from "@/lib/schemas/post";
+import {
+  addPostSchema,
+  getNewestPostsSchema,
+  likePostSchema,
+} from "@/lib/schemas/post";
+import { getSession } from "../../../lib/auth";
 
 export const postRouter = createTRPCRouter({
   add: protectedProcedure
@@ -18,12 +23,41 @@ export const postRouter = createTRPCRouter({
       });
       return post;
     }),
+
+  likePost: protectedProcedure
+    .input(likePostSchema)
+    .mutation(async ({ input, ctx }) => {
+      await ctx.db.postLike.create({
+        data: {
+          likedBy: ctx.user.id,
+          likedPostId: input.postId,
+        },
+      });
+    }),
+  unlikePost: protectedProcedure
+    .input(likePostSchema)
+    .mutation(async ({ input, ctx }) => {
+      await ctx.db.postLike.deleteMany({
+        where: {
+          AND: {
+            likedBy: ctx.user.id,
+            likedPostId: input.postId,
+          },
+        },
+      });
+    }),
   getBoards: publicProcedure.query(async ({ ctx }) => {
     return await ctx.db.board.findMany();
   }),
   getMostPopular: publicProcedure.query(async ({ ctx }) => {
+    const session = await getSession();
     return await ctx.db.post.findMany({
       include: {
+        likes: {
+          where: {
+            likedBy: session?.user.id,
+          },
+        },
         _count: {
           select: {
             likes: true,
@@ -63,6 +97,8 @@ export const postRouter = createTRPCRouter({
           }
         : null;
 
+      const session = await getSession();
+
       return await ctx.db.post.findMany({
         ...withBoard,
         orderBy: {
@@ -74,6 +110,11 @@ export const postRouter = createTRPCRouter({
             select: {
               likes: true,
               comments: true,
+            },
+          },
+          likes: {
+            where: {
+              likedBy: session?.user.id,
             },
           },
           createdByUser: {

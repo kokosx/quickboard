@@ -6,13 +6,14 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { UserIcon } from "lucide-react";
 
 const AuthDrawer = () => {
   return (
     <Drawer>
       <DrawerTrigger asChild>
         <Button id="open-auth-drawer" variant="outline">
-          Open Drawer
+          Sign in <UserIcon />
         </Button>
       </DrawerTrigger>
       <DrawerContent>
