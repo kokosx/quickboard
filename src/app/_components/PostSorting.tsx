@@ -14,7 +14,7 @@ const PostSorting = () => {
 
   return (
     <Select onValueChange={handleSortChange} defaultValue={currentSort}>
-      <SelectTrigger className="w-[280px]">
+      <SelectTrigger className="w-full">
         <SelectValue placeholder="Browse by" />
       </SelectTrigger>
       <SelectContent>

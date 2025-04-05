@@ -11,8 +11,6 @@ import {
 import BoardIcon from "./BoardIcon";
 
 import { useRouter } from "next/navigation";
-import { Button } from "../../components/ui/button";
-import { XIcon } from "lucide-react";
 
 type Props = {
   boards: Board[];
@@ -23,7 +21,7 @@ const BoardNavigation = ({ boards }: Props) => {
 
   return (
     <Select onValueChange={(e) => router.push(e == "/" ? "/" : `/board/${e}`)}>
-      <SelectTrigger className="w-[280px]">
+      <SelectTrigger className="w-full">
         <SelectValue placeholder="Select a board to browse" />
       </SelectTrigger>
       <SelectContent>

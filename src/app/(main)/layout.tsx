@@ -22,7 +22,7 @@ const layout = async ({ children }: { children: ReactNode }) => {
         <main className="flex flex-col gap-4">
           <div className="flex items-center justify-between border-b pb-4 dark:border-gray-800">
             <h1 className="text-xl font-bold">Home</h1>
-            <div className="flex gap-x-2">
+            <div className="flex max-w-[115px] flex-col gap-2 md:max-w-full md:flex-row">
               <PostSorting />
               <BoardNavigation boards={boards} />
             </div>

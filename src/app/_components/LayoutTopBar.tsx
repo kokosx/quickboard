@@ -1,4 +1,4 @@
-import { Search, User } from "lucide-react";
+import { Search } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { Input } from "../../components/ui/input";
@@ -28,9 +28,20 @@ const LayoutTopBar = async () => {
                 strokeLinejoin="round"
                 className="h-6 w-6 text-blue-500"
               >
-                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+                {/* Board outline */}
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+
+                {/* Board sections/cards */}
+                <rect x="6" y="6" width="5" height="4" rx="1" />
+                <rect x="13" y="6" width="5" height="4" rx="1" />
+                <rect x="6" y="14" width="5" height="4" rx="1" />
+                <rect x="13" y="14" width="5" height="4" rx="1" />
+
+                {/* Quick indicator - lightning bolt */}
+                <path d="M12 3v2" />
+                <path d="M12 19v2" />
               </svg>
-              <span className="hidden md:inline-block">Twitter</span>
+              <span className="hidden md:inline-block">QuickBoard</span>
             </Link>
             <div className="hidden md:flex">
               <div className="relative">
