@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import { api } from "../../trpc/react";
 import { authClient } from "../../lib/auth-client";
+import { useUser } from "./UserProvider";
+import { toast } from "sonner";
 
 type Props = {
   initialLikes: number;
@@ -17,6 +19,8 @@ export default function PostLikeButton({
   postId,
   initiallyLiked,
 }: Props) {
+  const user = useUser();
+
   const likeAction = api.post.likePost.useMutation();
   const unlikeAction = api.post.unlikePost.useMutation();
 
@@ -24,6 +28,10 @@ export default function PostLikeButton({
   const [isLiked, setIsLiked] = useState(initiallyLiked);
 
   const handleLike = () => {
+    if (!user) {
+      toast.error("You must be logged in to like posts");
+      return;
+    }
     if (isLiked) {
       setLikes((prev) => prev - 1);
       unlikeAction.mutate({ postId });

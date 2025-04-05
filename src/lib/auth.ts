@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { db } from "@/server/db";
 import { headers } from "next/headers";
-import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
+import { type ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {

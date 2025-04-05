@@ -5,6 +5,7 @@ import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { getSession } from "../../lib/auth";
 import AuthDrawer from "./AuthDrawer";
+import UserDropdown from "./UserDropdown";
 
 const LayoutTopBar = async () => {
   const s = await getSession();
@@ -51,14 +52,7 @@ const LayoutTopBar = async () => {
               <Search className="h-5 w-5" />
               <span className="sr-only">Search</span>
             </Button>
-            {user ? (
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <User className="h-5 w-5" />
-                <span className="sr-only">Profile</span>
-              </Button>
-            ) : (
-              <AuthDrawer />
-            )}
+            {user ? <UserDropdown /> : <AuthDrawer />}
           </div>
         </div>
       </div>

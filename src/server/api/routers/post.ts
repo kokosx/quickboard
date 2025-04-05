@@ -114,7 +114,12 @@ export const postRouter = createTRPCRouter({
           },
           likes: {
             where: {
-              likedBy: session?.user.id,
+              OR: [
+                {
+                  likedBy: session?.user.id,
+                },
+                { likedBy: "" },
+              ],
             },
           },
           createdByUser: {
