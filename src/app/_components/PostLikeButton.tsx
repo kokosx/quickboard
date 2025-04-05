@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import { api } from "../../trpc/react";
-import { authClient } from "../../lib/auth-client";
 import { useUser } from "./UserProvider";
 import { toast } from "sonner";
 

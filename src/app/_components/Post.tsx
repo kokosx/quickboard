@@ -34,7 +34,7 @@ const Post = ({
             <span className="text-gray-500 dark:text-gray-400">·</span>
             <span className="text-gray-500 dark:text-gray-400">
               {createdAt.toLocaleDateString()}
-              {updatedAt !== createdAt && (
+              {updatedAt.toISOString() !== createdAt.toISOString() && (
                 <>
                   <span className="text-gray-500 dark:text-gray-400">·</span>
                   <span className="text-gray-500 dark:text-gray-400">
