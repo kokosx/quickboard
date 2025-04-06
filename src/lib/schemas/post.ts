@@ -9,6 +9,10 @@ export const getNewestPostsSchema = z.object({
   boardId: z.string().optional(),
 });
 
+export const getPopularPostsSchema = z.object({
+  boardId: z.string().optional(),
+});
+
 export const likePostSchema = z.object({
   postId: z.string(),
 });

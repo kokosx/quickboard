@@ -1,10 +1,22 @@
 import { api } from "@/trpc/server";
 import PostList from "../../../_components/PostList";
+import { type PostOutput } from "../../../../server/api/trpc";
 
-const page = async () => {
-  const posts = await api.post.getNewest({
-    boardId: "9cc9e04d-525e-4570-bcd0-570383520abf",
-  });
+type Props = {
+  searchParams: Promise<{
+    sort?: string;
+  }>;
+  params: Promise<{ boardid: string }>;
+};
+
+const page = async ({ params, searchParams }: Props) => {
+  let posts: PostOutput["getMostPopular"] = [];
+  const boardId = (await params).boardid;
+  if ((await searchParams).sort === "most-popular") {
+    posts = await api.post.getMostPopular({ boardId });
+  } else {
+    posts = await api.post.getNewest({ boardId });
+  }
 
   return (
     <div>

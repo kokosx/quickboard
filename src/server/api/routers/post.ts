@@ -6,6 +6,7 @@ import {
 import {
   addPostSchema,
   getNewestPostsSchema,
+  getPopularPostsSchema,
   likePostSchema,
 } from "@/lib/schemas/post";
 import { getSession } from "../../../lib/auth";
@@ -49,58 +50,56 @@ export const postRouter = createTRPCRouter({
   getBoards: publicProcedure.query(async ({ ctx }) => {
     return await ctx.db.board.findMany();
   }),
-  getMostPopular: publicProcedure.query(async ({ ctx }) => {
-    const session = await getSession();
-    return await ctx.db.post.findMany({
-      include: {
-        likes: {
-          where: {
-            likedBy: session?.user.id,
+  getMostPopular: publicProcedure
+    .input(getPopularPostsSchema)
+    .query(async ({ ctx, input }) => {
+      const session = await getSession();
+      return await ctx.db.post.findMany({
+        include: {
+          likes: {
+            where: {
+              likedBy: session?.user.id,
+            },
+          },
+          _count: {
+            select: {
+              likes: true,
+              comments: true,
+            },
+          },
+          createdByUser: {
+            select: {
+              name: true,
+              image: true,
+            },
           },
         },
-        _count: {
-          select: {
-            likes: true,
-            comments: true,
+        take: 10,
+        orderBy: {
+          likes: {
+            _count: "desc",
           },
         },
-        createdByUser: {
-          select: {
-            name: true,
-            image: true,
+        where: {
+          createdAt: {
+            //Make it so that it only shows posts from the last 24 hours
+            gte: new Date(Date.now() - 24 * 60 * 60 * 1000),
           },
+
+          boardId: input.boardId ?? undefined,
         },
-      },
-      take: 10,
-      orderBy: {
-        likes: {
-          _count: "desc",
-        },
-      },
-      where: {
-        createdAt: {
-          //Make it so that it only shows posts from the last 24 hours
-          gte: new Date(Date.now() - 24 * 60 * 60 * 1000),
-        },
-      },
-    });
-  }),
+      });
+    }),
 
   getNewest: publicProcedure
     .input(getNewestPostsSchema)
     .query(async ({ ctx, input }) => {
-      const withBoard = input.boardId
-        ? {
-            where: {
-              boardId: input.boardId,
-            },
-          }
-        : null;
-
       const session = await getSession();
 
       return await ctx.db.post.findMany({
-        ...withBoard,
+        where: {
+          boardId: input.boardId ?? undefined,
+        },
         orderBy: {
           createdAt: "desc",
         },
