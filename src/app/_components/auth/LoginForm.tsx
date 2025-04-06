@@ -23,7 +23,7 @@ import { signinSchema } from "@/lib/schemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
-import { revalidateAction } from "../../server/actions/revalidate";
+import { revalidateAction } from "../../../server/actions/revalidate";
 import { toast } from "sonner";
 
 const LoginForm = () => {

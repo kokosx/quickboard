@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useAddSearchParam } from "../../lib/hooks/useAddSearchParam";
+import { useAddSearchParam } from "../../../lib/hooks/useAddSearchParam";
 
 const PostSorting = () => {
   const { currentSort, handleSortChange } = useAddSearchParam("sort", "newest");

@@ -1,8 +1,8 @@
 import { BookmarkIcon, MessageCircle, MoreHorizontal } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { type PostOutput } from "../../server/api/trpc";
 import PostLikeButton from "./PostLikeButton";
+import { type PostOutput } from "../../../server/api/trpc";
 
 type Props = PostOutput["getNewest"][number];
 

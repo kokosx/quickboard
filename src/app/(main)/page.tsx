@@ -1,7 +1,8 @@
 import React from "react";
 import { api } from "../../trpc/server";
-import PostList from "../_components/PostList";
+
 import { type PostOutput } from "../../server/api/trpc";
+import PostList from "../_components/post/PostList";
 
 type Props = {
   searchParams: Promise<{

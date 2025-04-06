@@ -1,11 +1,11 @@
 import { Search } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import { Input } from "../../components/ui/input";
-import { Button } from "../../components/ui/button";
-import { getSession } from "../../lib/auth";
-import AuthDrawer from "./AuthDrawer";
-import UserDropdown from "./UserDropdown";
+import { Input } from "../../../components/ui/input";
+import { Button } from "../../../components/ui/button";
+import { getSession } from "../../../lib/auth";
+import AuthDrawer from "../auth/AuthDrawer";
+import UserDropdown from "../auth/UserDropdown";
 
 const LayoutTopBar = async () => {
   const s = await getSession();

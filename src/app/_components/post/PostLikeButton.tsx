@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
-import { api } from "../../trpc/react";
-import { useUser } from "./UserProvider";
+import { api } from "@/trpc/react";
+import { useUser } from "../auth//UserProvider";
 import { toast } from "sonner";
 
 type Props = {

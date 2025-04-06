@@ -1,4 +1,4 @@
-import { type PostOutput } from "../../server/api/trpc";
+import { type PostOutput } from "../../../server/api/trpc";
 import Post from "./Post";
 
 type Props = {

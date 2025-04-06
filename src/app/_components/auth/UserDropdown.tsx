@@ -8,11 +8,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOutIcon, UserIcon } from "lucide-react";
-import { Button } from "../../components/ui/button";
-import { authClient } from "../../lib/auth-client";
+import { BookmarkIcon, LogOutIcon, Settings, UserIcon } from "lucide-react";
+import { Button } from "../../../components/ui/button";
+import { authClient } from "../../../lib/auth-client";
 import { useRouter } from "next/navigation";
-import { revalidateAction } from "../../server/actions/revalidate";
+import { revalidateAction } from "../../../server/actions/revalidate";
+import Link from "next/link";
 
 const UserDropdown = () => {
   const router = useRouter();
@@ -37,10 +38,15 @@ const UserDropdown = () => {
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Billing</DropdownMenuItem>
-        <DropdownMenuItem>Team</DropdownMenuItem>
-        <DropdownMenuItem>Subscription</DropdownMenuItem>
+        <Link href="/settings">
+          <DropdownMenuItem>
+            Profile <Settings />
+          </DropdownMenuItem>
+        </Link>
+
+        <DropdownMenuItem>
+          Bookmarks <BookmarkIcon />
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={signOut}>
           Log out <LogOutIcon />
         </DropdownMenuItem>

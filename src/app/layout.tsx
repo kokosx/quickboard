@@ -5,7 +5,9 @@ import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import { Toaster } from "../components/ui/sonner";
-import LayoutTopBar from "./_components/LayoutTopBar";
+import LayoutTopBar from "./_components/layout/LayoutTopBar";
+import { getSession } from "../lib/auth";
+import UserProvider from "./_components/auth/UserProvider";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -13,17 +15,20 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const s = await getSession();
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
         <TRPCReactProvider>
-          <div className="flex min-h-screen flex-col bg-white dark:bg-gray-950">
-            <LayoutTopBar />
-            {children}
-          </div>
+          <UserProvider user={s?.user}>
+            <div className="flex min-h-screen flex-col bg-white dark:bg-gray-950">
+              <LayoutTopBar />
+              {children}
+            </div>
+          </UserProvider>
         </TRPCReactProvider>
         <Toaster />
       </body>

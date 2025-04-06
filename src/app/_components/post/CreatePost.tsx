@@ -3,7 +3,7 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { openAuthDrawer } from "./AuthDrawer";
+import { openAuthDrawer } from "../auth/AuthDrawer";
 import { type User } from "better-auth";
 import { type Board } from "@prisma/client";
 import {
@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import BoardIcon from "./BoardIcon";
+import BoardIcon from "../BoardIcon";
 import { useForm } from "react-hook-form";
 import { addPostSchema } from "@/lib/schemas/post";
 import { type z } from "zod";
@@ -28,13 +28,15 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
+import { useUser } from "../auth/UserProvider";
 
 type Props = {
   user?: User;
   boards: Board[];
 };
 
-const CreatePost = ({ user, boards }: Props) => {
+const CreatePost = ({ boards }: Props) => {
+  const user = useUser();
   const handleUnauthedClick = () => {
     if (!user) {
       openAuthDrawer();
