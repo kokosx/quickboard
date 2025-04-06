@@ -25,10 +25,10 @@ Simplest board for stating your opinions
   5. Following users ❌
 - 📝 Posts
   1.  CRUD posts ❌
-  2.  Post likes ❌
+  2.  Post likes ✔️
   3.  Post comments ❌
   4.  Posts with images ❌
-  5.  Post tags ❌
+  5.  Post tags ✔️
   6.  Polls ❌
 
 ### TODO:
