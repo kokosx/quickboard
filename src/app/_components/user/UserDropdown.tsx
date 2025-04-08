@@ -8,7 +8,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { BookmarkIcon, LogOutIcon, Settings, UserIcon } from "lucide-react";
+import {
+  BookmarkIcon,
+  LogOutIcon,
+  Settings,
+  User2,
+  UserIcon,
+} from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { authClient } from "../../../lib/auth-client";
 import { useRouter } from "next/navigation";
@@ -38,9 +44,14 @@ const UserDropdown = () => {
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
+
+        <DropdownMenuItem>
+          Profile <User2 />
+        </DropdownMenuItem>
+
         <Link href="/settings">
           <DropdownMenuItem>
-            Profile <Settings />
+            Settings <Settings />
           </DropdownMenuItem>
         </Link>
 

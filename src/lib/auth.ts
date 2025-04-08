@@ -18,6 +18,14 @@ export const auth = betterAuth({
       maxAge: 5 * 60,
     },
   },
+  user: {
+    additionalFields: {
+      bio: {
+        type: "string",
+        defaultValue: "",
+      },
+    },
+  },
 });
 
 export const getSession = async () => {

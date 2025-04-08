@@ -4,8 +4,8 @@ import React from "react";
 import { Input } from "../../../components/ui/input";
 import { Button } from "../../../components/ui/button";
 import { getSession } from "../../../lib/auth";
-import AuthDrawer from "../auth/AuthDrawer";
-import UserDropdown from "../auth/UserDropdown";
+import AuthDrawer from "../user/AuthDrawer";
+import UserDropdown from "../user/UserDropdown";
 
 const LayoutTopBar = async () => {
   const s = await getSession();
@@ -15,7 +15,7 @@ const LayoutTopBar = async () => {
       <div className="container flex h-16 items-center px-4 md:px-6">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-4 md:gap-6">
-            <Link href="#" className="flex items-center gap-2 font-semibold">
+            <Link href="/" className="flex items-center gap-2 font-semibold">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"

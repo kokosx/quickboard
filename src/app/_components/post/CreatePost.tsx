@@ -3,7 +3,7 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { openAuthDrawer } from "../auth/AuthDrawer";
+import { openAuthDrawer } from "../user/AuthDrawer";
 import { type User } from "better-auth";
 import { type Board } from "@prisma/client";
 import {
@@ -28,7 +28,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
-import { useUser } from "../auth/UserProvider";
+import { useUser } from "../user/UserProvider";
 
 type Props = {
   user?: User;

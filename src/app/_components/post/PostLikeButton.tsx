@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import { api } from "@/trpc/react";
-import { useUser } from "../auth//UserProvider";
+import { useUser } from "../user/UserProvider";
 import { toast } from "sonner";
 
 type Props = {

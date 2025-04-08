@@ -7,7 +7,7 @@ import { TRPCReactProvider } from "@/trpc/react";
 import { Toaster } from "../components/ui/sonner";
 import LayoutTopBar from "./_components/layout/LayoutTopBar";
 import { getSession } from "../lib/auth";
-import UserProvider from "./_components/auth/UserProvider";
+import UserProvider from "./_components/user/UserProvider";
 
 export const metadata: Metadata = {
   title: "Create T3 App",

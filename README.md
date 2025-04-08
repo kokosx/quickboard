@@ -19,8 +19,8 @@ Simplest board for stating your opinions
   2. Google auth ❌
 - 🤵 Users
   1. User profiles ❌
-  2. User settings ❌
-  3. User profile picture ❌
+  2. User settings ✔️
+  3. User profile picture ✔️
   4. Blocking users ❌
   5. Following users ❌
 - 📝 Posts

@@ -59,8 +59,9 @@ model PostComment {
 
 model User {
   id            String    @id
-  name          String @unique
+  name          String    @unique
   email         String
+  bio           String @default("")
   emailVerified Boolean
   image         String?
   createdAt     DateTime
