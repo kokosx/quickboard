@@ -32,3 +32,8 @@ Simplest board for stating your opinions
   6.  Polls ❌
 
 ### TODO:
+
+- Add pagination
+- Add comments
+- Add user profile
+-

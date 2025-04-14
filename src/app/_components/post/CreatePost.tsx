@@ -29,6 +29,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 import { useUser } from "../user/UserProvider";
+import UserAvatar from "../user/UserAvatar";
 
 type Props = {
   user?: User;
@@ -70,10 +71,7 @@ const CreatePost = ({ boards }: Props) => {
       onClick={handleUnauthedClick}
       className="flex gap-4 border-b pb-4 dark:border-gray-800"
     >
-      <Avatar className="h-10 w-10">
-        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="@user" />
-        <AvatarFallback>U</AvatarFallback>
-      </Avatar>
+      <UserAvatar name={user?.name} image={user?.image} />
       <div className="flex-1">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
