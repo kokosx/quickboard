@@ -1,4 +1,4 @@
-import { editUserSchema } from "../../../lib/schemas/user";
+import { editUserSchema, getUserInfoSchema } from "../../../lib/schemas/user";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const userRouter = createTRPCRouter({
@@ -15,5 +15,15 @@ export const userRouter = createTRPCRouter({
           id: ctx.user.id,
         },
       });
+    }),
+  getUserInfo: protectedProcedure
+    .input(getUserInfoSchema)
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findUnique({
+        where: {
+          id: input.userId,
+        },
+      });
+      return user;
     }),
 });

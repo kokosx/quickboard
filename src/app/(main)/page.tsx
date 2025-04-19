@@ -3,6 +3,7 @@ import { api } from "../../trpc/server";
 
 import { type PostOutput } from "../../server/api/trpc";
 import PostList from "../_components/post/PostList";
+import CreatePost from "../_components/post/CreatePost";
 
 type Props = {
   searchParams: Promise<{
@@ -18,8 +19,11 @@ const page = async ({ searchParams }: Props) => {
     posts = await api.post.getNewest({});
   }
 
+  const boards = await api.post.getBoards();
+
   return (
     <div>
+      <CreatePost boards={boards} />
       <PostList posts={posts} />
     </div>
   );

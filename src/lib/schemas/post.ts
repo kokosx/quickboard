@@ -5,6 +5,10 @@ export const addPostSchema = z.object({
   board: z.string(),
 });
 
+export const getPostSchema = z.object({
+  postId: z.string(),
+});
+
 export const getNewestPostsSchema = z.object({
   boardId: z.string().optional(),
 });

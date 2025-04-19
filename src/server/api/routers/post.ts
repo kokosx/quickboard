@@ -7,11 +7,61 @@ import {
   addPostSchema,
   getNewestPostsSchema,
   getPopularPostsSchema,
+  getPostSchema,
   likePostSchema,
 } from "@/lib/schemas/post";
 import { getSession } from "../../../lib/auth";
 
 export const postRouter = createTRPCRouter({
+  getPost: publicProcedure
+    .input(getPostSchema)
+    .query(async ({ ctx, input }) => {
+      const session = await getSession();
+      return await ctx.db.post.findFirst({
+        where: {
+          id: input.postId,
+        },
+        include: {
+          createdByUser: {
+            select: {
+              name: true,
+              image: true,
+              id: true,
+              bio: true,
+              createdAt: true,
+            },
+          },
+          comments: {
+            select: {
+              createdAt: true,
+              createdBy: true,
+              createdByUser: {
+                select: {
+                  name: true,
+                  image: true,
+                  id: true,
+                  bio: true,
+                },
+              },
+              text: true,
+              id: true,
+            },
+          },
+
+          likes: {
+            where: {
+              likedBy: session?.user.id,
+            },
+          },
+          _count: {
+            select: {
+              likes: true,
+              comments: true,
+            },
+          },
+        },
+      });
+    }),
   add: protectedProcedure
     .input(addPostSchema)
     .mutation(async ({ input, ctx }) => {
@@ -71,6 +121,9 @@ export const postRouter = createTRPCRouter({
             select: {
               name: true,
               image: true,
+              id: true,
+              bio: true,
+              createdAt: true,
             },
           },
         },
@@ -125,6 +178,9 @@ export const postRouter = createTRPCRouter({
             select: {
               name: true,
               image: true,
+              id: true,
+              bio: true,
+              createdAt: true,
             },
           },
         },

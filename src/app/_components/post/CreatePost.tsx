@@ -30,6 +30,7 @@ import { api } from "@/trpc/react";
 import { toast } from "sonner";
 import { useUser } from "../user/UserProvider";
 import UserAvatar from "../user/UserAvatar";
+import { useRouter } from "next/navigation";
 
 type Props = {
   user?: User;
@@ -37,6 +38,7 @@ type Props = {
 };
 
 const CreatePost = ({ boards }: Props) => {
+  const router = useRouter();
   const user = useUser();
   const handleUnauthedClick = () => {
     if (!user) {
@@ -45,9 +47,10 @@ const CreatePost = ({ boards }: Props) => {
   };
 
   const addPost = api.post.add.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
       form.reset();
       toast.success("Post created!");
+      router.push(`/post/${data.id}`);
     },
     onError: (error) => {
       toast.error(error.message ?? "Unknown error occured");
@@ -69,7 +72,7 @@ const CreatePost = ({ boards }: Props) => {
   return (
     <div
       onClick={handleUnauthedClick}
-      className="flex gap-4 border-b pb-4 dark:border-gray-800"
+      className="mb-4 flex gap-4 border-b pb-4 dark:border-gray-800"
     >
       <UserAvatar name={user?.name} image={user?.image} />
       <div className="flex-1">

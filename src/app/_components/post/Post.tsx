@@ -3,6 +3,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import PostLikeButton from "./PostLikeButton";
 import { type PostOutput } from "../../../server/api/trpc";
+import { NicknameHover } from "../user/NicknameHover";
+import UserAvatar from "../user/UserAvatar";
 
 type Props = PostOutput["getNewest"][number];
 
@@ -18,19 +20,13 @@ const Post = ({
   return (
     <div className="border-b pb-4 dark:border-gray-800">
       <div className="flex gap-4">
-        <Avatar className="h-10 w-10">
-          <AvatarImage
-            src={createdByUser.image as string | undefined}
-            alt={createdByUser.name}
-          />
-          <AvatarFallback>{createdByUser.name.charAt(0)}</AvatarFallback>
-        </Avatar>
+        <UserAvatar name={createdByUser.name} image={createdByUser.image} />
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <span className="font-bold">{createdByUser.name}</span>
-            <span className="text-gray-500 dark:text-gray-400">
+            <NicknameHover {...createdByUser} />
+            {/* <span className="text-gray-500 dark:text-gray-400">
               @{createdByUser.name}
-            </span>
+            </span> */}
             <span className="text-gray-500 dark:text-gray-400">·</span>
             <span className="text-gray-500 dark:text-gray-400">
               {createdAt.toLocaleDateString()}

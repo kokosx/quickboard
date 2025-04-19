@@ -24,7 +24,7 @@ const layout = async ({ children }: { children: ReactNode }) => {
           <PostSorting />
           <BoardNavigation boards={boards} />
         </LayoutTitleBar>
-        <CreatePost boards={boards} />
+
         <LayoutScrollable>{children}</LayoutScrollable>
       </LayoutMain>
       <Suspense fallback={<AsideSkeleton />}>

@@ -24,3 +24,7 @@ export const editUserSchema = z.object({
   bio: z.string().max(150).default(""),
   avatar: z.string().nullable(),
 });
+
+export const getUserInfoSchema = z.object({
+  userId: z.string(),
+});
