@@ -2,7 +2,6 @@ import WhoToFollow from "../_components/layout/WhoToFollow";
 import LayoutAside from "../_components/layout/LayoutAside";
 import TrendsForYou from "../_components/layout/TrendsForYou";
 import { Suspense, type ReactNode } from "react";
-import CreatePost from "../_components/post/CreatePost";
 import { api } from "@/trpc/server";
 import BoardNavigation from "../_components/BoardNavigation";
 import PostSorting from "../_components/post/PostSorting";

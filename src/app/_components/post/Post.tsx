@@ -1,10 +1,12 @@
+"use client";
+
 import { BookmarkIcon, MessageCircle, MoreHorizontal } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import PostLikeButton from "./PostLikeButton";
 import { type PostOutput } from "../../../server/api/trpc";
 import { NicknameHover } from "../user/NicknameHover";
 import UserAvatar from "../user/UserAvatar";
+import { useRouter } from "next/navigation";
 
 type Props = PostOutput["getNewest"][number];
 
@@ -17,12 +19,23 @@ const Post = ({
   createdByUser,
   likes,
 }: Props) => {
+  const router = useRouter();
   return (
-    <div className="border-b pb-4 dark:border-gray-800">
+    <div
+      onMouseEnter={() => router.prefetch(`/post/${id}`)}
+      onClick={() => router.push(`/post/${id}`)}
+      className="cursor-pointer border-b pb-4 dark:border-gray-800"
+    >
       <div className="flex gap-4">
-        <UserAvatar name={createdByUser.name} image={createdByUser.image} />
+        <span className="cursor-auto" onClick={(e) => e.stopPropagation()}>
+          <UserAvatar name={createdByUser.name} image={createdByUser.image} />
+        </span>
+
         <div className="flex-1">
-          <div className="flex items-center gap-2">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center gap-2"
+          >
             <NicknameHover {...createdByUser} />
             {/* <span className="text-gray-500 dark:text-gray-400">
               @{createdByUser.name}
@@ -39,17 +52,12 @@ const Post = ({
                 </>
               )}
             </span>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="ml-auto h-8 w-8 rounded-full"
-            >
-              <MoreHorizontal className="h-4 w-4" />
-              <span className="sr-only">More</span>
-            </Button>
           </div>
           <p className="mt-1 text-gray-900 dark:text-gray-50">{text}</p>
-          <div className="mt-2 flex max-w-fit justify-between text-gray-500 dark:text-gray-400">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="mt-2 flex max-w-fit cursor-auto justify-between text-gray-500 dark:text-gray-400"
+          >
             <PostLikeButton
               initiallyLiked={likes.length > 0}
               postId={id}
