@@ -25,3 +25,7 @@ export const createCommentSchema = z.object({
   text: z.string().min(5).max(300),
   postId: z.string(),
 });
+
+export const repostPostSchema = z.object({
+  postId: z.string(),
+});

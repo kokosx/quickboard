@@ -9,6 +9,7 @@ import {
   getPopularPostsSchema,
   getPostSchema,
   likePostSchema,
+  repostPostSchema,
 } from "@/lib/schemas/post";
 import { getSession } from "../../../lib/auth";
 
@@ -62,6 +63,32 @@ export const postRouter = createTRPCRouter({
         },
       });
     }),
+  repost: protectedProcedure
+    .input(repostPostSchema)
+    .mutation(async ({ input, ctx }) => {
+      await ctx.db.repost.create({
+        data: {
+          repostedBy: ctx.user.id,
+          repostedPostId: input.postId,
+        },
+      });
+    }),
+  unrepost: protectedProcedure
+    .input(repostPostSchema)
+    .mutation(async ({ input, ctx }) => {
+      await ctx.db.repost.deleteMany({
+        where: {
+          AND: [
+            {
+              repostedBy: ctx.user.id,
+            },
+            {
+              repostedPostId: input.postId,
+            },
+          ],
+        },
+      });
+    }),
   add: protectedProcedure
     .input(addPostSchema)
     .mutation(async ({ input, ctx }) => {
@@ -109,6 +136,16 @@ export const postRouter = createTRPCRouter({
           likes: {
             where: {
               likedBy: session?.user.id,
+            },
+          },
+          reposts: {
+            where: {
+              OR: [
+                {
+                  repostedBy: session?.user.id,
+                },
+                { repostedBy: "" },
+              ],
             },
           },
           _count: {
@@ -171,6 +208,16 @@ export const postRouter = createTRPCRouter({
                   likedBy: session?.user.id,
                 },
                 { likedBy: "" },
+              ],
+            },
+          },
+          reposts: {
+            where: {
+              OR: [
+                {
+                  repostedBy: session?.user.id,
+                },
+                { repostedBy: "" },
               ],
             },
           },

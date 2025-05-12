@@ -28,11 +28,23 @@ model Post {
   createdBy String
   createdByUser User     @relation(fields: [createdBy], references: [id], onDelete: Cascade)
 
+  reposts   Repost[]
   likes     PostLike[]
   comments PostComment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Repost {
+  repostedBy String
+  repostedByUser User     @relation(fields: [repostedBy], references: [id], onDelete: Cascade)
+  repostedPostId String
+  repostedPost Post     @relation(fields: [repostedPostId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([repostedBy,repostedPostId])
 }
 
 model PostLike {
@@ -69,6 +81,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
+  Reposts Repost[]
   createdComments PostComment[]
   createdPosts Post[]
   likedPosts PostLike[]

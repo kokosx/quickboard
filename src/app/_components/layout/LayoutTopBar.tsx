@@ -48,7 +48,7 @@ const LayoutTopBar = async () => {
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
                 <Input
                   type="search"
-                  placeholder="Search Twitter"
+                  placeholder="Search QuickBoard"
                   className="w-64 rounded-full bg-gray-100 pl-8 dark:bg-gray-800"
                 />
               </div>
