@@ -1,6 +1,6 @@
 "use client";
 
-import { BookmarkIcon, MessageCircle, MoreHorizontal } from "lucide-react";
+import { BookmarkIcon, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PostLikeButton from "./PostLikeButton";
 import { type PostOutput } from "../../../server/api/trpc";

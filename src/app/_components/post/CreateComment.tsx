@@ -2,8 +2,8 @@
 
 import { useForm } from "react-hook-form";
 import { useUser } from "../user/UserProvider";
-import { z } from "zod";
-import { createCommentSchema } from "../../../lib/schemas/post";
+import { type z } from "zod";
+import { createCommentSchema } from "@/lib/schemas/post";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -11,9 +11,13 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "../../../components/ui/form";
+} from "@/components/ui/form";
 import { openAuthDrawer } from "../user/AuthDrawer";
-import { Textarea } from "../../../components/ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "../../../components/ui/button";
+import { api } from "../../../trpc/react";
+import { toast } from "sonner";
+import { revalidateAction } from "../../../server/actions/revalidate";
 
 type Props = {
   postId: string;
@@ -29,9 +33,21 @@ const CreateComment = ({ postId }: Props) => {
     },
   });
 
+  const { mutate, isPending } = api.comment.create.useMutation({
+    onSuccess: async () => {
+      form.reset();
+      toast("Added a comment!");
+      await revalidateAction(`/post/${postId}`, "page");
+    },
+    onError: () => {
+      toast("An error occured!");
+      form.setError("text", { message: "An error occured" });
+    },
+  });
+
   const onSubmit = (data: z.infer<typeof createCommentSchema>) => {
     if (!user) return;
-    console.log(data);
+    mutate(data);
   };
   const handleFormClick = () => {
     if (!user) openAuthDrawer();
@@ -40,7 +56,7 @@ const CreateComment = ({ postId }: Props) => {
   return (
     <div onClick={handleFormClick}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form className="space-y-2" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
             name="text"
@@ -53,6 +69,7 @@ const CreateComment = ({ postId }: Props) => {
               </FormItem>
             )}
           />
+          <Button disabled={isPending}>Add</Button>
         </form>
       </Form>
     </div>
